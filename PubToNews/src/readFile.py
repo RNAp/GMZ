@@ -1,4 +1,3 @@
-
 class ArticleReader(object):
     '''
        Given a spinn3r file, read in a list of article dictionary. 
