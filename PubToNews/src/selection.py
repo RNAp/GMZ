@@ -95,22 +95,28 @@ def select_by_keywords(ArticleReader, SelectedArticle, keyWords, verbose='title'
     articles = ArticleReader.articleList
     
     for article in ArticleReader.articleList:
-        cur_c=article['content']
-        cur_t=article['title']
+        cur_c=article.get('content', None)
+        cur_t=article.get('title', None)
 
         '''
         the following selections are based on the assumption that: titles and contents are arrays
         '''
         if verbose=='title':
+            if cur_t == None:
+                continue
             if __find_key_in_array(keyWords, cur_t):
                 SelectedArticle.addArticle(article)
                 continue
         if verbose=='content':
+            if cur_c == None:
+                continue
             #if __find_key_in_array(keyWords, cur_c):
             if __find_key_in_string(keyWords, cur_c):
                 SelectedArticle.addArticle(article)
                 continue
         if verbose=='both':
+            if cur_t == None or cur_c == None:
+                continue
             if __find_key_in_array(keyWords, cur_t) or __find_key_in_string(keyWords, cur_c):
                 SelectedArticle.addArticle(article)
                 continue
