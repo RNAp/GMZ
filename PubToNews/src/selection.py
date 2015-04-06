@@ -77,6 +77,11 @@ def __find_key_in_array(keyWords, targetArr):
     return False
     
 
+def __find_key_in_string(keyWords, targetStr):
+    for key in keyWords:
+        if key in targetStr:
+            return True
+    return False
 
 def select_by_keywords(ArticleReader, SelectedArticle, keyWords, verbose='title'):
 
@@ -101,11 +106,12 @@ def select_by_keywords(ArticleReader, SelectedArticle, keyWords, verbose='title'
                 SelectedArticle.addArticle(article)
                 break
         if verbose=='content':
-            if __find_key_in_array(keyWords, cur_c):
+            #if __find_key_in_array(keyWords, cur_c):
+            if __find_key_in_string(keyWords, cur_c):
                 SelectedArticle.addArticle(article)
                 break
         if verbose=='both':
-            if __find_key_in_array(keyWords, cur_t) or __find_key_in_array(keyWords, cur_c):
+            if __find_key_in_array(keyWords, cur_t) or __find_key_in_string(keyWords, cur_c):
                 SelectedArticle.addArticle(article)
                 break
     return SelectedArticle
