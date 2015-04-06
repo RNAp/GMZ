@@ -104,15 +104,15 @@ def select_by_keywords(ArticleReader, SelectedArticle, keyWords, verbose='title'
         if verbose=='title':
             if __find_key_in_array(keyWords, cur_t):
                 SelectedArticle.addArticle(article)
-                break
+                continue
         if verbose=='content':
             #if __find_key_in_array(keyWords, cur_c):
             if __find_key_in_string(keyWords, cur_c):
                 SelectedArticle.addArticle(article)
-                break
+                continue
         if verbose=='both':
             if __find_key_in_array(keyWords, cur_t) or __find_key_in_string(keyWords, cur_c):
                 SelectedArticle.addArticle(article)
-                break
+                continue
     return SelectedArticle
          
