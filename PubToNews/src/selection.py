@@ -37,7 +37,6 @@ def select_by_url(ArticleReader, SelectedArticle, url_Filename='url_list.txt'):
     url_set = __readURLfile(url_Filename)
 
     SelectedArticle.addUrlSource(url_set)
-    
     for article in ArticleReader.articleList:
         cur_url=article['url']
         for url in url_set:
@@ -99,15 +98,15 @@ def select_by_keywords(ArticleReader, SelectedArticle, keyWords, verbose='title'
         '''
         if verbose=='title':
             if __find_key_in_array(keyWords, cur_t):
-                SelectedArticle.add(article)
+                SelectedArticle.addArticle(article)
                 break
         if verbose=='content':
             if __find_key_in_array(keyWords, cur_c):
-                SelectedArticle.add(article)
+                SelectedArticle.addArticle(article)
                 break
         if verbose=='both':
             if __find_key_in_array(keyWords, cur_t) or __find_key_in_array(keyWords, cur_c):
-                SelectedArticle.add(article)
+                SelectedArticle.addArticle(article)
                 break
     return SelectedArticle
          

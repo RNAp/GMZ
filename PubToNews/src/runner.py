@@ -11,12 +11,11 @@ import FormatArticles as fa
 
 ar = ArticleReader()
 ar.readFile('sample_of_sample.txt')
-ar.sortArticleByDate()
 
 print 'readfing files'
 
 sr = SelectedArticle()
-key = set(['obama', 'Nobel'])
+key = set(['bandwagon'])
 url = set(['google.com', 'acs.org'])
 
 for article in ar.getArticleList():
@@ -32,4 +31,4 @@ tol = sr.count
 print tol
 for a in sr.getArticleList():
         print "--------"
-        print a['content']
+        print a['title']
