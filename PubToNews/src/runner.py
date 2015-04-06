@@ -1,3 +1,7 @@
+'''
+this is simply a test script
+'''
+
 from readFile import ArticleReader
 from selectedArticle import SelectedArticle
 from selection import select_by_keywords
