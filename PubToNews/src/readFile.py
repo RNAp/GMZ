@@ -7,6 +7,7 @@ class ArticleReader(object):
     def __init__(self):
         self.articleList = []
         
+        
     def readFile(self, filename):
         f = open(filename)
         for line in f:
