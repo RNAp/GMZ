@@ -14,6 +14,16 @@ class ArticleReader(object):
 
     def __init__(self):
         self.articleList = []
+
+    # the following methods were added due to modifications in SelectedArticle class
+    def keyWordsSource(self):
+        return None
+
+    def urlSource(self):
+        return None
+
+    def dateRange(self):
+        return None
         
     def readFile(self, filename):
         f = open(filename)
