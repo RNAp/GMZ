@@ -16,26 +16,44 @@ select_by_url(ArticleReader, SelectedArticle, url_Filename='url_list.txt')
 
 select_by_date(ArticleReader, SelectedArticle, time_stamp, date_range = timedelta(days=7))
 
-select_by_keywords(ArticleReader, SelectedArticle, keyWords, verbose='title')
-
-contain_all_keywords(ArticleReader, SelectedArticle, keyWords)  ## to be implemented!!
+select_by_keywords(ArticleReader, SelectedArticle, keyWords, verbose='title/content/both/all')
+Note: when we want to choose articles contain ALL keywords, use verbose = 'all'
 
 #######################
 '''
-def __readURLfile(url_Filename='url_list.txt'):
+def _readURLfile(url_Filename='url_list.txt'):
     url_set = set()
     with open(url_Filename, 'r') as f:
         for line in f.readlines():
 			url_set.add(line.strip())
     return url_set
+'''
+House keeping helper function used to preserve house keeping info from previous selectedArticles
+
+'''
+
+
+def _preserveSR(prev_SR, cur_SR):
+    if prev_SR.keyWordsSource() is not None:
+        cur_SR.addKeyWordsSource(prev_SR.keyWordsSource())
+    if prev_SR.urlSource() is not None:
+        cur_SR.addUrlSource(prev_SR.urlSource())
+    if prev_SR.dateRange() is not None:
+        cur_SR.addDateRange(prev_SR.dateRange())
+    return cur_SR
+
+
+
 
 '''
         select articles from a mannually maintained url list
 '''
 def select_by_url(ArticleReader, SelectedArticle, url_Filename='url_list.txt'):
     articles = ArticleReader.articleList
-    url_set = __readURLfile(url_Filename)
+    url_set = _readURLfile(url_Filename)
 
+    _preserveSR(ArticleReader, SelectedArticle) # this is to preserve info from ArticleReader when ArticleReader is actually previous generation of SelectedArticle
+    
     SelectedArticle.addUrlSource(url_set)
     for article in ArticleReader.articleList:
         cur_url=article['url']
@@ -49,6 +67,9 @@ def select_by_url(ArticleReader, SelectedArticle, url_Filename='url_list.txt'):
         select articles from within a specified date range (default is 7 days) since a particular time_stamp
 '''
 def select_by_date(ArticleReader, SelectedArticle, time_stamp, date_range = timedelta(days=7)):
+    _preserveSR(ArticleReader, SelectedArticle) # this is to preserve info from ArticleReader when ArticleReader is actually previous generation of SelectedArticle
+    
+
     articles = ArticleReader.articleList
 
     ref_time=time_stamp
@@ -70,26 +91,27 @@ def select_by_date(ArticleReader, SelectedArticle, time_stamp, date_range = time
 __find_key_in_array is a helper that searches through array to see wether keyWords are found
 '''
 
-def __find_key_in_array(keyWords, targetArr):
+def _find_key_in_array(keyWords, targetArr):
     for i in range(len(targetArr)):
         if targetArr[i] in keyWords:
             return True
     return False
     
 
-def __find_key_in_string(keyWords, targetStr):
+def _find_key_in_string(keyWords, targetStr):
     for key in keyWords:
         if key in targetStr:
             return True
     return False
 
 def select_by_keywords(ArticleReader, SelectedArticle, keyWords, verbose='title'):
-
-    SelectedArticle.keyWordsSource(keyWords)
+    _preserveSR(ArticleReader, SelectedArticle) # this is to preserve info from ArticleReader when ArticleReader is actually previous generation of SelectedArticle
     
-    valid_verbose=set(['title', 'content', 'both'])
+    SelectedArticle.addKeyWordsSource(keyWords)
+    
+    valid_verbose=set(['title', 'content', 'both', 'all'])
     if verbose not in valid_verbose:
-        print "Invalid verbose: specify select from 'title', 'content', or 'both'! "
+        print "Invalid verbose: specify select from 'title', 'content', 'both', or 'all'! "
         return SelectedArticle
 
     articles = ArticleReader.articleList
@@ -104,21 +126,35 @@ def select_by_keywords(ArticleReader, SelectedArticle, keyWords, verbose='title'
         if verbose=='title':
             if cur_t == None:
                 continue
-            if __find_key_in_array(keyWords, cur_t):
+            if _find_key_in_array(keyWords, cur_t):
                 SelectedArticle.addArticle(article)
                 continue
         if verbose=='content':
             if cur_c == None:
                 continue
             #if __find_key_in_array(keyWords, cur_c):
-            if __find_key_in_string(keyWords, cur_c):
+            if _find_key_in_string(keyWords, cur_c):
                 SelectedArticle.addArticle(article)
                 continue
         if verbose=='both':
             if cur_t == None or cur_c == None:
                 continue
-            if __find_key_in_array(keyWords, cur_t) or __find_key_in_string(keyWords, cur_c):
+            if _find_key_in_array(keyWords, cur_t) or _find_key_in_string(keyWords, cur_c):
                 SelectedArticle.addArticle(article)
                 continue
+        if verbose == 'all':
+            if cur_c == None:
+                continue
+            for key in keyWords:
+                if key not in cur_c:
+                    continue
+            SelectedArticle.addArticle(article)
+            
     return SelectedArticle
-         
+
+'''
+Looks through content and select articles that contains all keywords in given keyWords set
+'''
+#def contain_all_keywords(ArticleReader, SelectedArticle, keyWords):
+            #SelectedArticle.keyWordsSource(keyWords)
+    
