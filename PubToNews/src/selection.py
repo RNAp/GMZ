@@ -39,7 +39,10 @@ def _preserveSR(prev_SR, cur_SR):
     if prev_SR.urlSource() is not None:
         cur_SR.addUrlSource(prev_SR.urlSource())
     if prev_SR.dateRange() is not None:
-        cur_SR.addDateRange(prev_SR.dateRange())
+        for dict in prev_SR.dateRange():
+            cur_k=dict.keys()
+            cur_v=dict.values()
+            cur_SR.addDateRange(cur_k[0], cur_v[0])
     return cur_SR
 
 
@@ -145,10 +148,12 @@ def select_by_keywords(ArticleReader, SelectedArticle, keyWords, verbose='title'
         if verbose == 'all':
             if cur_c == None:
                 continue
+            mark = 0
             for key in keyWords:
                 if key not in cur_c:
-                    continue
-            SelectedArticle.addArticle(article)
+                    mark+=1
+            if mark == 0:
+                SelectedArticle.addArticle(article)
             
     return SelectedArticle
 

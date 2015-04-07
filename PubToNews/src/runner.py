@@ -15,13 +15,13 @@ ar.readFile('sample_of_sample.txt')
 print 'readfing files'
 
 sr = SelectedArticle()
-key = set(['bandwagon', 'obama', 'rock', 'gore'])
+key = set(['obama', 'gore'])
 url = set(['google.com', 'acs.org'])
 
 print "select by url"
 sr = select_by_url(ar, sr)
 
-
+print sr.count
 
 print "################"
 
@@ -39,7 +39,7 @@ for article in ar.getArticleList():
         article['content']=fa.convert_to_match_array(cur_c)
     
 print "select by keywords"
-sr = select_by_keywords(sr, SelectedArticle(), key, 'content')
+sr = select_by_keywords(sr, SelectedArticle(), key, 'all')
 tol = sr.count
 for a in sr.getArticleList():
         print "--------"

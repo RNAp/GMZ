@@ -41,34 +41,34 @@ class SelectedArticle(object):
         '''
         housekeeping sets to record the selection criterias
         '''
-        self.urlSource=[]
+        self.urlSourceSet=[]
 
         # the date range is stored as a set of dictionaries: {timestamp : interval}
     
-        self.dateRange=[]
+        self.dateRangeSet=[]
         
         self.keyWordsSet=[]
 
     def addDateRange(self, timestamp, interval):
         newDict = {timestamp : interval}
-        dateRange.append(newDict)
+        dateRangeSet.append(newDict)
 
     def dateRange(self):
-        return dateRange
+        return self.dateRangeSet
         
     def addUrlSource(self, urlSet):
         for url in urlSet:
-            self.urlSource.append(url)
+            self.urlSourceSet.append(url)
 
     def urlSource(self):
-        return urlSource
+        return self.urlSourceSet
     
     def addKeyWordsSource(self, keyWords):
        for key in keyWords:
            self.keyWordsSet.append(key)
 
     def keyWordsSource(self):
-        return keyWordsSet
+        return self.keyWordsSet
    
     def addArticle(self, selected_article):
         self.articleList.append(selected_article)
