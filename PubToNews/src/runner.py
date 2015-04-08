@@ -10,6 +10,7 @@ from selection import select_by_url
 import FormatArticles as fa
 import datetime as dt
 from datetime import timedelta
+import histogram as hist
 
 NEWS_TIMEFORMAT = "%Y-%m-%d %H:%M:%S"
 
@@ -24,7 +25,7 @@ key = set(['obama', 'gore'])
 print "select by date"
 date = "2009-01-01 00:00:00"
 timestamp = dt.datetime.strptime(date.strip(), NEWS_TIMEFORMAT)
-interval = timedelta(days=100)
+interval = timedelta(days=1000)
 
 sr = select_by_date(ar, sr, timestamp, interval)
 
@@ -56,6 +57,7 @@ for a in sr.getArticleList():
 print "#################"
 print "formatting"
 
+'''
 for article in sr.getArticleList():
     cur_t=article.get('title', None)
     cur_c=article.get('content', None)
@@ -63,7 +65,11 @@ for article in sr.getArticleList():
         article['title']=fa.convert_to_match_array(cur_t)
     if cur_c is not None:
         article['content']=fa.convert_to_match_array(cur_c)
+'''
 
 
+date = "2009-01-01 00:00:00"
+timestamp = dt.datetime.strptime(date.strip(), NEWS_TIMEFORMAT)
+hist.sr_month_hist(sr, timestamp)
 
 print tol
