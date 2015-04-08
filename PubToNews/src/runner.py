@@ -8,6 +8,10 @@ from selection import select_by_keywords
 from selection import select_by_date
 from selection import select_by_url
 import FormatArticles as fa
+import datetime as dt
+from datetime import timedelta
+
+NEWS_TIMEFORMAT = "%Y-%m-%d %H:%M:%S"
 
 ar = ArticleReader()
 
@@ -17,8 +21,16 @@ ar.readFile('part-r-00011')
 sr = SelectedArticle()
 key = set(['obama', 'gore'])
 
+print "select by date"
+date = "2009-01-01 00:00:00"
+timestamp = dt.datetime.strptime(date.strip(), NEWS_TIMEFORMAT)
+interval = timedelta(days=100)
+
+sr = select_by_date(ar, sr, timestamp, interval)
+
+
 print "select by url"
-sr = select_by_url(ar, sr)
+sr = select_by_url(sr, SelectedArticle())
 
 print sr.count
 
@@ -38,7 +50,8 @@ for a in sr.getArticleList():
         print "--------"
         cur_t=a.get('title', None)
         if cur_t is not None:
-                print cur_t
+                print cur_t,
+        print a.get('date', None)
 
 print "#################"
 print "formatting"
