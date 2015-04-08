@@ -14,8 +14,8 @@ class ArticleReader(object):
 
     def __init__(self):
         self.articleList = []
-
-    # the following methods were added due to modifications in SelectedArticle class
+      
+    # the following methods were added due to modifications in SelectedArticle class by MC
     def keyWordsSource(self):
         return None
 
@@ -24,7 +24,7 @@ class ArticleReader(object):
 
     def dateRange(self):
         return None
-        
+      
     def readFile(self, filename):
         f = open(filename)
         for line in f:
@@ -53,6 +53,7 @@ class ArticleReader(object):
                     quoteList = []
                     quoteList.append(value)
                     self.articleList[-1]['quotes'] = quoteList
+        f.close()
     def getArticleList(self):
         return self.articleList
     
