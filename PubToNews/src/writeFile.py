@@ -48,7 +48,6 @@ class ArticleWriter(object):
     
     def writeIDDate(self, filename):
         f = open(filename,'w')
-        f = open(filename,'w')
         for a in self.articleList:
             for key in a.keys():
                     if key == 'id':
