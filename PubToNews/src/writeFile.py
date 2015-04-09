@@ -13,7 +13,7 @@ class ArticleWriter(object):
 
     def __init__(self, articleList):
         self.articleList = articleList
-        self._sortArticleByDate()
+        #self._sortArticleByDate()
         
     def writeFile(self, filename):
         f = open(filename,'w')

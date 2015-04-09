@@ -9,13 +9,14 @@ sortArticleByDate - Sort the articles by date
 import datetime as dt 
 
 NEWS_TIMEFORMAT = "%Y-%m-%d %H:%M:%S"
+EN_THRESHOLD = 0.95
 
 class ArticleReader(object):
 
     def __init__(self):
         self.articleList = []
-      
-    # the following methods were added due to modifications in SelectedArticle class by MC
+
+    # the following methods were added due to modifications in SelectedArticle class
     def keyWordsSource(self):
         return None
 
@@ -24,7 +25,7 @@ class ArticleReader(object):
 
     def dateRange(self):
         return None
-      
+        
     def readFile(self, filename):
         f = open(filename)
         for line in f:
@@ -33,10 +34,16 @@ class ArticleReader(object):
                 continue
             key = fields[0]
             value = fields[-1]
+            
             if key == 'I':
-                newArticle = {}
-                newArticle['id'] = value
-                self.articleList.append(newArticle)
+                next(f)
+                temp = next(f).split('\t')
+                temp_key = temp[0]
+                en = float(temp[-1])
+                if en >= EN_THRESHOLD:
+                    newArticle = {}
+                    newArticle['id'] = value
+                    self.articleList.append(newArticle)
             if key == 'U':
                 self.articleList[-1]['url'] = value
             if key == 'D':
@@ -53,7 +60,6 @@ class ArticleReader(object):
                     quoteList = []
                     quoteList.append(value)
                     self.articleList[-1]['quotes'] = quoteList
-        f.close()
     def getArticleList(self):
         return self.articleList
     
