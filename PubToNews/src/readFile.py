@@ -5,6 +5,7 @@ readFile - Given a spinn3r file, read in a list of article dictionary. Each arti
 getArticleList - Get the list of articles
 sortArticleByDate - Sort the articles by date
 '''
+# from writeFile import ArticleWriter
 import datetime as dt 
 
 NEWS_TIMEFORMAT = "%Y-%m-%d %H:%M:%S"
