@@ -10,7 +10,7 @@ Standard functions to do string processing.
 3. Convert text to array of words for string alignment. Strips capitalization and punctuation from word;
          also converts numerals to words if < 10.
    (convert_to_match_array)
-4, load stopword file
+
 """
 import string
 import re 
@@ -91,11 +91,5 @@ def convert_to_match_array(phrase, display_array=None, formatfn = lambda x: x):
 		display_array = convert_to_display_array(phrase, formatfn)
 	return [_convert_word(word) for word in display_array]
 
-def load_stopword_set(stopword_filename = 'mysql_stop.txt'):
-	stopword_set = set()
-	with open(stopword_filename, 'r') as f:
-		for line in f.readlines():
-			stopword_set.add(line.strip())
-	return stopword_set
 
 
