@@ -5,7 +5,6 @@ readFile - Given a spinn3r file, read in a list of article dictionary. Each arti
 getArticleList - Get the list of articles
 sortArticleByDate - Sort the articles by date
 '''
-
 import datetime as dt 
 
 NEWS_TIMEFORMAT = "%Y-%m-%d %H:%M:%S"
@@ -15,8 +14,8 @@ class ArticleReader(object):
 
     def __init__(self):
         self.articleList = []
-
-    # the following methods were added due to modifications in SelectedArticle class
+      
+    # the following methods were added due to modifications in SelectedArticle class by MC
     def keyWordsSource(self):
         return None
 
@@ -25,7 +24,7 @@ class ArticleReader(object):
 
     def dateRange(self):
         return None
-        
+      
     def readFile(self, filename):
         f = open(filename)
         for line in f:
@@ -34,16 +33,21 @@ class ArticleReader(object):
                 continue
             key = fields[0]
             value = fields[-1]
-            
             if key == 'I':
-                next(f)
-                temp = next(f).split('\t')
-                temp_key = temp[0]
-                en = float(temp[-1])
-                if en >= EN_THRESHOLD:
-                    newArticle = {}
-                    newArticle['id'] = value
-                    self.articleList.append(newArticle)
+                if len(self.articleList) > 0:
+                    lang = self.articleList[-1].get('language',None)
+                    if lang is not None:
+                        # pop the article if its language is not English or below the threshold
+                        if lang[0] != 'en' or float(lang[1]) < EN_THRESHOLD:
+                            self.articleList.pop()
+                        # remove the language key-value pair
+                        else:
+                            self.articleList[-1].pop('language')
+                newArticle = {}
+                newArticle['id'] = value
+                self.articleList.append(newArticle)
+            if key == 'S':
+                self.articleList[-1]['language'] = fields[1:]
             if key == 'U':
                 self.articleList[-1]['url'] = value
             if key == 'D':
@@ -60,6 +64,7 @@ class ArticleReader(object):
                     quoteList = []
                     quoteList.append(value)
                     self.articleList[-1]['quotes'] = quoteList
+        f.close()
     def getArticleList(self):
         return self.articleList
     
@@ -69,16 +74,18 @@ class ArticleReader(object):
         
         
 # if __name__ == '__main__':
-#     ar = ArticleReader() 
-#     ar.readFile('sample_of_sample2.txt')     
-#     ar.sortArticleByDate()
+#     ar = ArticleReader()
+#     ar.readFile('part-r-00009')
+#     aw = ArticleWriter(ar.getArticleList())
+#     aw.writeFile('test_en_part_9.txt')
+
 #     for a in ar.getArticleList():
 #         print "--------"
 #         for k,v in a.items():
 #             if k != 'quotes' and k != 'date':
-#                 print k + " : " + v    
+#                 print k + " : " + v
 #             if k == 'date':
 #                 print k + " : " + v.strftime(NEWS_TIMEFORMAT)
 #             if k == 'quotes':
 #                 for q in v:
-#                     print k + " : " + q                 
+#                     print k + " : " + q
