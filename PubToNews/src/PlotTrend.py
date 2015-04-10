@@ -33,14 +33,14 @@ def PlotTrend(filename, timeuit):
         count=[x[1] for x in grouped_week]
         week_lb=[x[0] for x in grouped_week]
         plt.plot(range(len(count)),count)
+        plt.xticks(rotation=90)
         plt.xticks(range(len(count)),week_lb)
         plt.show()
-        #return grouped_week
     elif ind ==0:
         list_of_months=[]        
         for line in f:
             fields = line.split()
-            month_idx=fields[1][:4]+fields[1][5:]
+            month_idx=fields[1][:4]+fields[1][5:7]
             list_of_months.append(month_idx)
         f.close()
         grouped_month = [[d, len(list(g))] for d,g in itertools.groupby(list_of_months, lambda k: k)]
@@ -50,5 +50,4 @@ def PlotTrend(filename, timeuit):
         plt.xticks(rotation=90)
         plt.xticks(range(len(count)),month_lb)
         plt.show()
-        #return grouped_month
    
