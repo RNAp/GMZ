@@ -33,7 +33,7 @@ def _findSeed(seedID, AR):
 '''
 The following method takes in seedID and a list of articles--ArticleReader, and finds seed news, and calculate similarity scores for each article
 '''
-def simScore(seedID, ArticleReader):
+def simScore(seedID, ArticleReader, filename='similarity.txt'):
     scoreDict = {} # 'ID' -> Score
     seed = _findSeed(seedID, ArticleReader)
     cur_score = 0.0
