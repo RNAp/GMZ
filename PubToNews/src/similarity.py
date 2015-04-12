@@ -42,5 +42,12 @@ def simScore(seedID, ArticleReader):
         if seedID != article['ID'] and scoreDict.get(article['ID'], None) is None:
             cur_score = calSimScore(seed, article)
             scoreDict.append({article['ID'], cur_score})
-    
+
+
+    f = open(filename, 'w')
+    for id in scoreList.keys():
+        f.write('%s\t' % id.strip())
+        f.write('%s\n' % scoreList[id].strip())
+    f.close()
+            
     return scoreList
