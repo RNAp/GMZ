@@ -105,7 +105,9 @@ def load_stopword_set(stopword_filename = 'mysql_stop.txt'):
 def contentCleanUp(ArticleReader):
     stopword_set = load_stopword_set()
     for article in ArticleReader.getArticleList():
-        cur_c = article['content']
+        cur_c = article.get('content', None)
+        if cur_c is None:
+            continue
         cur_c = standardize_formatting(cur_c)
         cur_c = convert_to_display_array(cur_c)
         cur_c = set(cur_c)-stopword_set

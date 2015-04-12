@@ -33,7 +33,7 @@ def _calSimScore(seed, ar):
 def _findSeed(seedID, AR):
     seed = {}
     for article in AR.getArticleList():
-        if seedID in article['id']:
+        if seedID in article.get('id', None):
             seed = article
             break
     return seed
@@ -47,7 +47,7 @@ def simScore(seedID, ArticleReader, filename='similarity.txt'):
     cur_score = 0.0
     
     for article in ArticleReader.getArticleList():
-        if seedID not in article['id'] and scoreDict.get(article['id'], None) is None:
+        if seedID not in article.get('id', None) and scoreDict.get(article['id'], None) is None:
             cur_score = _calSimScore(seed, article)
             scoreDict[article['id']] = cur_score
 
