@@ -53,10 +53,11 @@ def ExtracHist(input_filename, timeuit, output_filename):
             f.write(cp[0])
             f.write("\t %s " % str(cp[1]))
             f.write("\n")
-    f.close
+    f.close()
+    return
     
     
-def PlotHist(input_filename):
+def PlotHist(input_filename):#Plot the histgram of news frequency
     with open(input_filename, 'r') as f: 
          label=[]
          count=[]
@@ -69,4 +70,17 @@ def PlotHist(input_filename):
          plt.xticks(range(len(count)),label)
          plt.show()
     return
-             
+
+def PlotSimScore(input_filename): #Take in a file of news IDs and similarity scores, plot the scattering graph
+    with open(input_filename, 'r') as f: 
+         Id=[]
+         Score=[]
+         for line in f:
+             fields=line.split()
+             Id.append(fields[0])
+             Score.append(fields[1])
+         plt.scatter(range(len(Score)),Score)
+         plt.xticks(rotation=90)
+         plt.xticks(range(len(Id)),Id)
+         plt.show()
+    return
