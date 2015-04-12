@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """
+def contentCleanUp(ArticleReader): takes in ArticleReader class and clean up its content info, including: calling the following 1,2 & 4 functions. 
+
 Standard functions to do string processing.
 
 1. Standardizes hyphens, $, % and expression for dollars, percent 
@@ -10,9 +12,10 @@ Standard functions to do string processing.
 3. Convert text to array of words for string alignment. Strips capitalization and punctuation from word;
          also converts numerals to words if < 10.
    (convert_to_match_array)
-
+4, load stopword file
 """
 import string
+from readFile import ArticleReader
 import re 
 
 
@@ -97,4 +100,19 @@ def load_stopword_set(stopword_filename = 'mysql_stop.txt'):
 		for line in f.readlines():
 			stopword_set.add(line.strip())
 	return stopword_set
+
+
+def contentCleanUp(ArticleReader):
+    stopword_set = load_stopword_set()
+    for article in ArticleReader.getArticleList():
+        cur_c = article['content']
+        cur_c = standardize_formatting(cur_c)
+        cur_c = convert_to_display_array(cur_c)
+        cur_c = set(cur_c)-stopword_set
+        article['content'] = cur_c
+
+    return ArticleReader
+        
+    
+    
 
