@@ -28,7 +28,7 @@ def ExtracHist(input_filename, timeuit, output_filename):
                fields = line.split()
                #Decide the which week this day is in that year
                week_count=(dt.datetime.strptime(fields[1],DATE_TIMEFORMAT).date()).isocalendar()[1]
-               #Give an unique lable for that week and assigned it to this article
+               #Give an unique lable for that week and assigned it to this article                           
                week_idx=fields[1][:4]+str(week_count)
                list_of_weeks.append(week_idx)
            f.close()
@@ -79,9 +79,11 @@ def PlotSimScore(input_filename,output_filename): #Take in a file of news IDs an
          for line in f:
              fields=line.split()
              #Decide the which week this day is in that year
-             week_count=(dt.datetime.strptime(fields[1],DATE_TIMEFORMAT).date()).isocalendar()[1]
+             week_count=str((dt.datetime.strptime(fields[1],DATE_TIMEFORMAT).date()).isocalendar()[1])
              #Give an unique lable for that week and assigned it to this article
-             week_idx=int(fields[1][:4]+str(week_count))
+             if len(week_count) is 1:
+                   week_count='0'+week_count
+             week_idx=int(fields[1][:4]+week_count)
              Score.append(float(fields[3]))
              
              if week_idx in Week_Score:
