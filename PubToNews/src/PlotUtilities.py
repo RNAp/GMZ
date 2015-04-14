@@ -6,6 +6,7 @@ import datetime as dt
 import string
 import itertools
 import matplotlib.pyplot as plt
+import operator
 
 DATE_TIMEFORMAT = "%Y-%m-%d"
 
@@ -71,16 +72,40 @@ def PlotHist(input_filename):#Plot the histgram of news frequency
          plt.show()
     return
 
-def PlotSimScore(input_filename): #Take in a file of news IDs and similarity scores, plot the scattering graph
+def PlotSimScore(input_filename,output_filename): #Take in a file of news IDs and similarity scores, plot the scattering graph
     with open(input_filename, 'r') as f: 
-         Id=[]
+         Week_Score={}
          Score=[]
          for line in f:
              fields=line.split()
-             Id.append(fields[0])
-             Score.append(fields[1])
-         plt.scatter(range(len(Score)),Score)
-         plt.xticks(rotation=90)
-         plt.xticks(range(len(Id)),Id)
-         plt.show()
+             #Decide the which week this day is in that year
+             week_count=(dt.datetime.strptime(fields[1],DATE_TIMEFORMAT).date()).isocalendar()[1]
+             #Give an unique lable for that week and assigned it to this article
+             week_idx=int(fields[1][:4]+str(week_count))
+             Score.append(float(fields[3]))
+             
+             if week_idx in Week_Score:
+                Week_Score[week_idx].append(float(fields[3]))
+             else:
+                Week_Score[week_idx]=[float(fields[3])]
+         f.close()
+         
+         for key, value in Week_Score.items():
+             Week_Score[key]=sum(value)/len(value)
+    
+    sorted_week = sorted(Week_Score.items(), key=operator.itemgetter(0)) 
+    
+    with open(output_filename,'w') as f:
+         for pair in sorted_week:
+            f.write("%s " % str(pair[0]))
+            f.write("\t %s " % str(pair[1]))
+            f.write("\n")
+    f.close()     
+    #plt.hist(Score,bins=50, normed=True)
+    label=[x[0] for x in sorted_week]
+    score=[x[1] for x in sorted_week]
+    plt.plot(range(len(score)),score)
+    plt.xticks(rotation=90)
+    plt.xticks(range(len(score)),label)
+    plt.show()
     return
