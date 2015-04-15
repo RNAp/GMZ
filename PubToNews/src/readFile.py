@@ -36,14 +36,11 @@ class ArticleReader(object):
             value = fields[-1]
             if key == 'I':
                 if len(self.articleList) > 0:
-                    lang = self.articleList[-1].get('language',None)
-                    if lang is not None:
-                        # pop the article if its language is not English or below the threshold
-                        if lang[0] != 'en' or float(lang[1]) < EN_THRESHOLD:
-                            self.articleList.pop()
-                        # remove the language key-value pair
-                        else:
-                            self.articleList[-1].pop('language')
+                    self._langFiltering()
+                if len(self.articleList) > 0:
+                    self._urlFiltering()
+                if len(self.articleList) > 0:
+                    self._deduplication()
                 newArticle = {}
                 newArticle['id'] = value
                 self.articleList.append(newArticle)
@@ -66,6 +63,48 @@ class ArticleReader(object):
                     quoteList.append(value)
                     self.articleList[-1]['quotes'] = quoteList
         f.close()
+
+    def _langFiltering(self):
+        lang = self.articleList[-1].get('language',None)
+        if lang is not None:
+            # pop the article if its language is not English or below the threshold
+            if lang[0] != 'en' or float(lang[1]) < EN_THRESHOLD:
+                self.articleList.pop()
+            # remove the language key-value pair
+            else:
+                self.articleList[-1].pop('language')
+
+    def _deduplication(self):
+        lastUrl = self.articleList[-1].get('url',None)
+        lastTitle = self.articleList[-1].get('title',None)
+        lastContent = self.articleList[-1].get('content',None)
+        for a in self.articleList[:-1]:
+            url = a.get('url',None)
+            if url is not None and lastUrl is not None:
+                if lastUrl == url:
+                    self.articleList.pop()
+                    break
+            title = a.get('title',None)
+            if title is not None and lastTitle is not None:
+                if lastTitle == title:
+                    self.articleList.pop()
+                    break
+            content = a.get('content',None)
+            if content is not None and lastContent is not None:
+                if lastContent == content:
+                    self.articleList.pop()
+                    break
+
+    def _urlFiltering(self):
+        urlBlacklist = ['facebook.com','twitter.com']
+
+        lastUrl = self.articleList[-1].get('url',None)
+        if lastUrl is not None:
+            for u in urlBlacklist:
+                if u in lastUrl:
+                    self.articleList.pop()
+                    break
+
     def getArticleList(self):
         return self.articleList
     
