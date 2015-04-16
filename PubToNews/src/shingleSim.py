@@ -1,17 +1,29 @@
-import itertools
-from math import sqrt
 
-from lsh import MinHashSignature, jaccard_sim
-
+from lsh import *
+from FormatArticles import *
 from utils import *
 
 NEWS_TIMEFORMAT = "%Y-%m-%d %H:%M:%S"
 NUM_OF_HASH_FUNCS = 100
+SHINGLE_LEN = 3 # 9 means 9-character, 3 means 3-word
+
+def _cleanContent(cur_c):
+    # stopword_set = load_stopword_set()
+    # cur_c = standardize_formatting(cur_c)
+    cur_c = convert_to_match_array(cur_c)
+    # cur_c = set(cur_c)-stopword_set
+    return cur_c
 
 def getSeedSet(seedID, AR):
     for article in AR.getArticleList():
         if seedID in article.get('id', None):
-            return set(article['content'])
+            cur_c = article.get('content', None)
+            if cur_c is None:
+                print 'empty seed set!'
+                return set()
+            cur_c = _cleanContent(cur_c)
+            return set(hmultiWshingle(cur_c, SHINGLE_LEN))
+    print 'empty seed set!'
     return set()
 
 def calSignatureSimilarity(seedSet, aSet):
@@ -27,18 +39,18 @@ def calSignatureSimilarity(seedSet, aSet):
 
     return ssim
 
-def writeSimScores(seedID, ArticleReader, filenameToWrite):
-    seedSet = getSeedSet(seedID, ArticleReader)
-    if len(seedSet) == 0:
-        print 'empty seed set!'
-        return
+def writeSimScores(seedID, seedSet, ArticleReader, filenameToWrite):
     
     f = open(filenameToWrite + 'ByShingling.txt', 'w')
-    
+
     for article in ArticleReader.getArticleList():
+        cur_c = article.get('content', None)
+        if cur_c is None:
+            continue
+        cur_c = _cleanContent(cur_c)
         if seedID not in article.get('id', None):
             f.write('%s\t' % article['id'].strip())
             f.write('%s\t' % article['date'].strftime(NEWS_TIMEFORMAT))
-            f.write('%s\n' % calSignatureSimilarity(seedSet, set(article['content'])))
+            f.write('%s\n' % calSignatureSimilarity(seedSet, set(hmultiWshingle(cur_c, SHINGLE_LEN))))
 
     f.close()

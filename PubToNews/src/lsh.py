@@ -121,18 +121,29 @@ class MinHashSignature(Signature):
 #         return self.unionfind.sets()
 
 
-def shingle(s, k):
+def kshingle(s, k):
     """Generate k-length shingles of string s"""
     k = min(len(s), k)
     for i in range(len(s) - k + 1):
         yield s[i:i+k]
 
 
-def hshingle(s, k):
+def hkshingle(s, k):
     """Generate k-length shingles then hash"""
-    for s in shingle(s, k):
+    for s in kshingle(s, k):
         yield hash(s)
 
+def multiWshingle(a, k):
+    """Generate k-word shingles of array a"""
+    k = min(len(a), k)
+    for i in range(len(a) - k + 1):
+        yield ' '.join(a[i:i+k])
+
+
+def hmultiWshingle(a, k):
+    """Generate k-word shingles then hash"""
+    for s in multiWshingle(a, k):
+        yield hash(s)
 
 def jaccard_sim(X, Y):
     """Jaccard similarity between two sets"""
