@@ -25,8 +25,42 @@ class ArticleReader(object):
 
     def dateRange(self):
         return None
-      
+
     def readFile(self, filename):
+        f = open(filename)
+        for line in f:
+            fields = line.split('\t')
+            if len(fields) == 0:
+                continue
+            key = fields[0]
+            value = fields[-1]
+            if key == 'I':
+                if len(self.articleList) > 0:
+                    self._langFiltering()
+                newArticle = {}
+                newArticle['id'] = value
+                self.articleList.append(newArticle)
+            if key == 'S':
+                self.articleList[-1]['language'] = fields[1:]
+            if key == 'U':
+                self.articleList[-1]['url'] = value
+            if key == 'D':
+                self.articleList[-1]['date'] = dt.datetime.strptime(value.strip(), NEWS_TIMEFORMAT)
+            if key == 'T':
+                self.articleList[-1]['title'] = value
+            if key == 'C':
+                self.articleList[-1]['content'] = value
+            if key == 'Q':
+                quoteList = self.articleList[-1].get('quotes', None)
+                if quoteList is not None:
+                    self.articleList[-1].get('quotes').append(value)
+                else:
+                    quoteList = []
+                    quoteList.append(value)
+                    self.articleList[-1]['quotes'] = quoteList
+        f.close()
+
+    def readFileMoreFiltering(self, filename):
         f = open(filename)
         for line in f:
             fields = line.split('\t')
@@ -110,7 +144,6 @@ class ArticleReader(object):
     
     def sortArticleByDate(self):
         self.articleList.sort(key=lambda a : a.get('date'))
-                            
         
         
 # if __name__ == '__main__':
