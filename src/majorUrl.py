@@ -14,8 +14,10 @@ from urlparse import urlparse
 The purpose of this code is to read through all urls and find all major url domains
 '''
 
+'''
+the following method topUrl parses domain for a particular url and saves it into a dictionary of domain -> counts
+'''
 def topUrl(filename, urlDict):
-    
     f = open(filename)
 
     for line in f:
@@ -34,21 +36,17 @@ def topUrl(filename, urlDict):
                 urlDict[domain]=1
         else:
             continue
-
+    f.close()
     return urlDict
-
-parsed_uri = urlparse( 'http://stackoverflow.com/questions/1234567/blah-blah-blah-blah' )
-domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
-print domain
 
 urlDict = {} # url -> count
 
 for i in range(0, 10):
-    filename = 'part-r-0000'+str(i)
+    filename = 'secdata/part-r-0000'+str(i)
     urlDict = topUrl(filename, urlDict)
 
 for i in rang(10, 40):
-    filename = 'part-r-000' + str(i)
+    filename = 'secdata/part-r-000' + str(i)
     urlDict = topUrl(filename, urlDict)
 
 for url in sorted(urlDict, key=urlDict.get, reverse=True):
