@@ -18,25 +18,30 @@ The purpose of this code is to read through all urls and find all major url doma
 the following method topUrl parses domain for a particular url and saves it into a dictionary of domain -> counts
 '''
 def topUrl(filename, urlDict):
-    f = open(filename)
-
-    for line in f:
-        fields = line.split('\t')
-        if len(fields) == 0:
-            continue
-        key = fields[0]
-        value = fields[-1]
-        if key =='U':
-            cur_url = value
-            parsed_uri = urlparse(cur_url)
-            domain = '{uri.scheme}://{uri.netloc}/'.format(uri = parsed_uri)
-            if urlDict.get(domain, None) is not None:
-                urlDict[domain]=urlDict[domain]+1
+    #f = open(filename)
+    ar = ArticleReader()
+    ar.readFile(filename)
+    
+    
+    for article in ar.getArticleList():
+        #fields = line.split('\t')
+        #if len(fields) == 0:
+        #    continue
+        #key = fields[0]
+        #value = fields[-1]
+        #if key =='U':
+            cur_url = article.get('url', None)
+            if cur_url is not None:
+                parsed_uri = urlparse(cur_url)
+                domain = '{uri.scheme}://{uri.netloc}/'.format(uri = parsed_uri)
+                if urlDict.get(domain, None) is not None:
+                    urlDict[domain]=urlDict[domain]+1
+                else:
+                    urlDict[domain]=1
             else:
-                urlDict[domain]=1
-        else:
-            continue
-    f.close()
+                continue
+    
+  
     return urlDict
 
 urlDict = {} # url -> count
