@@ -56,6 +56,17 @@ for i in range(10, 40):
     print 'processing ', filename
     urlDict = topUrl(filename, urlDict)
 
+for i in range(0, 10):
+    filename = 'data/part-r-0000'+str(i)
+    print 'processing ', filename
+    urlDict = topUrl(filename, urlDict)
+
+for i in range(10, 40):
+    filename = 'data/part-r-000' + str(i)
+    print 'processing ', filename
+    urlDict = topUrl(filename, urlDict)
+
+    
 print 'Total domain count is ', len(urlDict)
 f = open('topURL.txt', 'w')
 for domain in sorted(urlDict, key=urlDict.get, reverse=True):
