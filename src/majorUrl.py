@@ -21,7 +21,7 @@ def topUrl(filename, urlDict):
     f = open(filename)
 
     for line in f:
-        files = line.split('\t')
+        fields = line.split('\t')
         if len(fields) == 0:
             continue
         key = fields[0]
@@ -43,14 +43,21 @@ urlDict = {} # url -> count
 
 for i in range(0, 10):
     filename = 'secdata/part-r-0000'+str(i)
+    print 'processing ', filename
     urlDict = topUrl(filename, urlDict)
 
-for i in rang(10, 40):
+for i in range(10, 40):
     filename = 'secdata/part-r-000' + str(i)
+    print 'processing ', filename
     urlDict = topUrl(filename, urlDict)
 
-for url in sorted(urlDict, key=urlDict.get, reverse=True):
-  print url, urlDict[url]
+print 'Total domain count is ', len(urlDict)
+f = open('topURL.txt', 'w')
+for domain in sorted(urlDict, key=urlDict.get, reverse=True):
+    if urlDict[domain] > 1:
+        f.write('%s\t'% domain)
+        f.write('%s\n'% str(urlDict[domain]))
 
+f.close()
     
         
