@@ -8,12 +8,22 @@ NUM_OF_HASH_FUNCS = 100
 SHINGLE_LEN = 3 # 3 means 3-word
 K_SHINGLE = 10 # 10 means 10-char shingle
 
+# the following method is used to generate words array for multi-word shingling
 def _cleanContent(cur_c):
     # stopword_set = load_stopword_set()
     # cur_c = standardize_formatting(cur_c)
     cur_c = convert_to_match_array(cur_c)
     # cur_c = set(cur_c)-stopword_set
     return cur_c
+
+# the following method is used to clean up content string for k-char shingling
+#def _cleanContent(cur_c):
+    # stopword_set = load_stopword_set()
+    # cur_c = standardize_formatting(cur_c)
+ #   cur_c = convert_to_match_array(cur_c)
+    # cur_c = set(cur_c)-stopword_set
+  #  return cur_c
+
 
 # a helper to calculate multi-word shingling
 def _HMultiWshingle(curContent):
@@ -31,7 +41,7 @@ def getSeedSet(seedID, AR):
             if cur_c is None:
                 print 'empty seed set!'
                 return set()
-            cur_c = _cleanContent(cur_c)
+   #         cur_c = _cleanContent(cur_c)
             #return set(hmultiWshingle(cur_c, SHINGLE_LEN))
             return _HMultiWshingle(cur_c)
     print 'empty seed set!'
