@@ -41,7 +41,7 @@ def getSeedSet(seedID, AR):
             if cur_c is None:
                 print 'empty seed set!'
                 return set()
-   #         cur_c = _cleanContent(cur_c)
+            cur_c = _cleanContent(cur_c)
             #return set(hmultiWshingle(cur_c, SHINGLE_LEN))
             return _HMultiWshingle(cur_c)
     print 'empty seed set!'
@@ -56,7 +56,7 @@ def seedKShingle(seedID, AR):
             if cur_c is None:
                 print 'empty seed set!'
                 return set()
-            cur_c = _cleanContent(cur_c)
+   #         cur_c = _cleanContent(cur_c)
             #return set(hmultiWshingle(cur_c, SHINGLE_LEN))
             return _HKshingle(cur_c)
     print 'empty seed set!'
