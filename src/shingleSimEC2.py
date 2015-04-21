@@ -5,7 +5,7 @@ import shingleSim as shsim
 # seedID = '2008080103_00008227_W' # sos
 seedID = '2012070412_00058390_W' # higgs
 
-print "get seed set"
+print "calculate seed k-char shingle"
 seed_ar = ArticleReader()
 seed_ar.readFile('articles_higgsPhyCern_all_no_dup.txt')
 # seed_ar.readFile('sample_of_sample.txt')
@@ -16,6 +16,8 @@ ar = ArticleReader()
 print "reading file"
 ar.readFile('articles_higgsPhyCern_all_no_dup.txt')
 # ar.readFile('sample_of_sample.txt')
+
+print 'total article number is ', len(ar.getArticleList())
 
 print "sort articles by date"
 ar.sortArticleByDate()
