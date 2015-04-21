@@ -108,5 +108,5 @@ def kcharSimScore(seedID, seedSet, ArticleReader, filenameToWrite):
             f.write('%s\t' % article['id'].strip())
             f.write('%s\t' % article['date'].strftime(NEWS_TIMEFORMAT))
             f.write('%s\n' % score)
-            print article['id'],'\t', score
+            print article['id'],' ', score, '\n'
     f.close()
