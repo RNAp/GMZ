@@ -107,6 +107,48 @@ def _find_key_in_string(keyWords, targetStr):
             return True
     return False
 
+def _find_element_in_list(element,list_element):
+    try:
+        index_element=list_element.index(element)
+        return index_element
+    except ValueError:
+        return -1
+
+def _keyword_location(keyword, content)
+    if type(content) is str
+       return content.find(keyword)/len(content)
+    elif type(content) is list
+       return _find_element_in_list(keyword,content)/len(content)
+
+def select_by_keywords_location(ArticleReader, SelectedArticle, keyWords, threshold):
+    _preserveSR(ArticleReader, SelectedArticle) # this is to preserve info from ArticleReader when ArticleReader is actually previous generation of SelectedArticle
+    
+    SelectedArticle.addKeyWordsSource(keyWords)
+    
+    if threshold >1 or threshold < 0
+       print "Invalid threshold: specify threshold between 0 and 1! "
+       return SelectedArticle
+    
+    articles = ArticleReader.articleList
+    
+    for article in ArticleReader.articleList:
+        cur_c=article.get('content', None)
+        '''
+            the following selections are based on the assumption that: contents are strings or list
+            '''
+        if cur_c == None:
+           continue
+
+        count=0
+        for word in keywords:
+            cur_loc=_keyword_location(word, cur_c)
+            if cur_loc>0 and cur_loc < threshold
+               count=count+1
+        if count is len(keywords)
+           SelectedArticle.addArticle(article)
+
+    return SelectedArticle
+
 def select_by_keywords(ArticleReader, SelectedArticle, keyWords, verbose='title'):
     _preserveSR(ArticleReader, SelectedArticle) # this is to preserve info from ArticleReader when ArticleReader is actually previous generation of SelectedArticle
     
