@@ -102,7 +102,7 @@ def kcharSimScore(seedID, seedSet, ArticleReader, filenameToWrite):
         cur_c = article.get('content', None)
         if cur_c is None:
             continue
-        cur_c = _cleanContent(cur_c)
+       # cur_c = _cleanContent(cur_c)
         if seedID not in article.get('id', None):
             score = calSignatureSimilarity(seedSet, _HKshingle(cur_c))
             f.write('%s\t' % article['id'].strip())
