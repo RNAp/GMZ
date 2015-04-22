@@ -7,6 +7,7 @@ from selectedArticle import SelectedArticle
 from selection import select_by_keywords
 from selection import select_by_date
 from selection import select_by_url
+from selection import select_by_ID
 import FormatArticles as fa
 import datetime as dt
 from datetime import timedelta
