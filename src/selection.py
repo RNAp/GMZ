@@ -124,9 +124,9 @@ def _find_element_in_list(element,list_element):
         return -1
 
 def _keyword_location(keyword, content):
-    if type(content) is str
+    if type(content) is str:
        return content.find(keyword)/len(content)
-    elif type(content) is list
+    elif type(content) is list:
        return _find_element_in_list(keyword,content)/len(content)
 
 def select_by_keywords_location(ArticleReader, SelectedArticle, keyWords, threshold):
