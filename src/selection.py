@@ -123,7 +123,7 @@ def _find_element_in_list(element,list_element):
     except ValueError:
         return -1
 
-def _keyword_location(keyword, content)
+def _keyword_location(keyword, content):
     if type(content) is str
        return content.find(keyword)/len(content)
     elif type(content) is list
