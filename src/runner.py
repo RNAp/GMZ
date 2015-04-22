@@ -38,7 +38,7 @@ print "################"
 
 aw = ArticleWriter(sr.getArticleList())
 
-aw.writeFile('topArticle_10cutoff_allinfo.txt')
+aw.writeFile('/results/sim02_02_10cutoff_allinfo.txt')
 
 
 
