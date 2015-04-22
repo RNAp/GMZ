@@ -15,7 +15,7 @@ import histogram as hist
 
 NEWS_TIMEFORMAT = "%Y-%m-%d %H:%M:%S"
 
-top = open('top_article_10cutoff.txt')
+top = open('sim002_01_10cutoff.txt')
 topID = []
 
 for line in top:
@@ -38,7 +38,7 @@ print "################"
 
 aw = ArticleWriter(sr.getArticleList())
 
-aw.writeFile('/results/sim02_02_10cutoff_allinfo.txt')
+aw.writeFile('/results/sim002_01_10cutoff_allinfo.txt')
 
 
 
