@@ -11,6 +11,7 @@ from datetime import timedelta
 '''
 #######################
 current API for selection module:
+select_by_ID(ArticleReader, SelectedArticle, IDlist)
 
 select_by_url(ArticleReader, SelectedArticle, url_Filename='url_list.txt')
 
@@ -46,6 +47,14 @@ def _preserveSR(prev_SR, cur_SR):
     return cur_SR
 
 
+def select_by_ID(ArticleReader, SelectedArticle, IDlist):
+    for article in ArticleReader:
+        cur_id = article.get('id', None)
+        for id in IDlist:
+            if id == cur_id:
+                SelectedArticle.addArticle(article)            
+
+    return SelectedArticle
 
 
 '''

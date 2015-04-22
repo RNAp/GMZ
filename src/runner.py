@@ -14,29 +14,34 @@ import histogram as hist
 
 NEWS_TIMEFORMAT = "%Y-%m-%d %H:%M:%S"
 
+top = open('top_article_10cutoff.csv')
+topID = []
+
+for line in top:
+        topID.append(line)
+top.close()
+
+
 ar = ArticleReader()
 
 print "reading files"
-ar.readFile('part-r-00011')
+ar.readFile('articles_higgsPhyCern_all_no_dup.txt')
 
 sr = SelectedArticle()
-key = set(['obama', 'gore'])
 
-print "select by date"
-date = "2009-01-01 00:00:00"
-timestamp = dt.datetime.strptime(date.strip(), NEWS_TIMEFORMAT)
-interval = timedelta(days=1000)
-
-sr = select_by_date(ar, sr, timestamp, interval)
-
-
-print "select by url"
-sr = select_by_url(sr, SelectedArticle())
+sr = select_by_ID(ar, sr, topID)
 
 print sr.count
 
 print "################"
 
+aw = ArticleWriter(sr.getArticleList())
+
+aw.writeFile(topArticle_10cutoff.txt)
+
+
+
+'''
 for a in sr.getArticleList():
         print "--------"
         cur_t=a.get('title', None)
@@ -57,7 +62,7 @@ for a in sr.getArticleList():
 print "#################"
 print "formatting"
 
-'''
+
 for article in sr.getArticleList():
     cur_t=article.get('title', None)
     cur_c=article.get('content', None)
@@ -67,9 +72,10 @@ for article in sr.getArticleList():
         article['content']=fa.convert_to_match_array(cur_c)
 '''
 
-
+'''
 date = "2009-01-01 00:00:00"
 timestamp = dt.datetime.strptime(date.strip(), NEWS_TIMEFORMAT)
 hist.sr_month_hist(sr, timestamp)
 
 print tol
+'''
