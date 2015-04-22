@@ -134,7 +134,7 @@ def select_by_keywords_location(ArticleReader, SelectedArticle, keyWords, thresh
     
     SelectedArticle.addKeyWordsSource(keyWords)
     
-    if threshold >1 or threshold < 0
+    if threshold >1 or threshold < 0:
        print "Invalid threshold: specify threshold between 0 and 1! "
        return SelectedArticle
     
