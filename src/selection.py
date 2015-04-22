@@ -48,7 +48,7 @@ def _preserveSR(prev_SR, cur_SR):
 
 
 def select_by_ID(ArticleReader, SelectedArticle, IDlist):
-    for article in ArticleReader:
+    for article in ArticleReader.getArticleList():
         cur_id = article.get('id', None)
         for id in IDlist:
             if id == cur_id:
