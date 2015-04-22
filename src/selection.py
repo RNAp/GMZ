@@ -151,10 +151,10 @@ def select_by_keywords_location(ArticleReader, SelectedArticle, keyWords, thresh
         count=0
         for word in keywords:
             cur_loc=_keyword_location(word, cur_c)
-            if cur_loc>0 and cur_loc < threshold
+            if cur_loc>0 and cur_loc < threshold:
                count=count+1
-        if count is len(keywords)
-           SelectedArticle.addArticle(article)
+               if count is len(keywords):
+                   SelectedArticle.addArticle(article)
 
     return SelectedArticle
 
