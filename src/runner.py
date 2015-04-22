@@ -1,7 +1,7 @@
 '''
 this is simply a test script
 '''
-
+from writeFile import ArticleWriter
 from readFile import ArticleReader
 from selectedArticle import SelectedArticle
 from selection import select_by_keywords
@@ -15,11 +15,11 @@ import histogram as hist
 
 NEWS_TIMEFORMAT = "%Y-%m-%d %H:%M:%S"
 
-top = open('top_article_10cutoff.csv')
+top = open('top_article_10cutoff.txt')
 topID = []
 
 for line in top:
-        topID.append(line)
+        topID.append(line[:-1])
 top.close()
 
 
@@ -38,7 +38,7 @@ print "################"
 
 aw = ArticleWriter(sr.getArticleList())
 
-aw.writeFile(topArticle_10cutoff.txt)
+aw.writeFile('topArticle_10cutoff_allinfo.txt')
 
 
 

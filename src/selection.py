@@ -51,7 +51,7 @@ def select_by_ID(ArticleReader, SelectedArticle, IDlist):
     for article in ArticleReader.getArticleList():
         cur_id = article.get('id', None)
         for id in IDlist:
-            if id == cur_id:
+            if id in cur_id:
                 SelectedArticle.addArticle(article)            
 
     return SelectedArticle
