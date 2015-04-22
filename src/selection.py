@@ -114,10 +114,10 @@ def _find_element_in_list(element,list_element):
     except ValueError:
         return -1
 
-def _keyword_location(keyword, content)
-    if type(content) is str
+def _find_keyword_location(keyword, content):
+    if type(content) is str:
        return content.find(keyword)/len(content)
-    elif type(content) is list
+    elif type(content) is list:
        return _find_element_in_list(keyword,content)/len(content)
 
 def select_by_keywords_location(ArticleReader, SelectedArticle, keyWords, threshold):
@@ -125,11 +125,9 @@ def select_by_keywords_location(ArticleReader, SelectedArticle, keyWords, thresh
     
     SelectedArticle.addKeyWordsSource(keyWords)
     
-    if threshold >1 or threshold < 0
+    if threshold >1 or threshold < 0:
        print "Invalid threshold: specify threshold between 0 and 1! "
        return SelectedArticle
-    
-    articles = ArticleReader.articleList
     
     for article in ArticleReader.articleList:
         cur_c=article.get('content', None)
@@ -139,12 +137,13 @@ def select_by_keywords_location(ArticleReader, SelectedArticle, keyWords, thresh
         if cur_c == None:
            continue
 
-        count=0
-        for word in keywords:
-            cur_loc=_keyword_location(word, cur_c)
-            if cur_loc>0 and cur_loc < threshold
-               count=count+1
-        if count is len(keywords)
+        flag=0
+        for word in keyWords:
+            cur_loc=_find_keyword_location(word, cur_c)
+            if cur_loc> threshold:
+               flag=1
+               break
+        if flag is 0:
            SelectedArticle.addArticle(article)
 
     return SelectedArticle
