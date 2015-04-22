@@ -68,9 +68,9 @@ for i in range(10, 40):
 
     
 print 'Total domain count is ', len(urlDict)
-f = open('topURL.txt', 'w')
+f = open('topURL10.txt', 'w')
 for domain in sorted(urlDict, key=urlDict.get, reverse=True):
-    if urlDict[domain] > 1:
+    if urlDict[domain] > 10:
         f.write('%s\t'% domain)
         f.write('%s\n'% str(urlDict[domain]))
 
