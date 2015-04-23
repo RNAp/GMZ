@@ -114,11 +114,11 @@ def _find_element_in_list(element,list_element):
     except ValueError:
         return -1
 
-def _find_keyword_location(keyword, content):
+def find_keyword_location(keyword, content):
     if type(content) is str:
-       return content.find(keyword)/len(content)
+       return content.find(keyword)*1.0/len(content)
     elif type(content) is list:
-       return _find_element_in_list(keyword,content)/len(content)
+       return _find_element_in_list(keyword,content)*1.0/len(content)
 
 def select_by_keywords_location(ArticleReader, SelectedArticle, keyWords, threshold):
     _preserveSR(ArticleReader, SelectedArticle) # this is to preserve info from ArticleReader when ArticleReader is actually previous generation of SelectedArticle
@@ -139,7 +139,7 @@ def select_by_keywords_location(ArticleReader, SelectedArticle, keyWords, thresh
 
         flag=0
         for word in keyWords:
-            cur_loc=_find_keyword_location(word, cur_c)
+            cur_loc=find_keyword_location(word, cur_c)
             if cur_loc> threshold:
                flag=1
                break
