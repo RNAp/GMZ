@@ -24,7 +24,7 @@ NEWS_TIMEFORMAT = "%Y-%m-%d %H:%M:%S"
 HYPHEN_TYPES = ["\xe2\x80\x94", " - ", "\xe2\x80\x93",'\xe2\x80\x92'," -- ","-"] 
 NUM_MAP = {'0':'zero', '1': 'one', '2':'two','3':'three','4':'four',
 			'5':'five','6':'six','7':'seven','8':'eight','9': 'nine'} 
-PUNCTUATION = '"&\'()+,-./:;<=>@[\\]^_`{|}~'
+PUNCTUATION = '"&\'()+,-./:;<=>@[\\]^_`{|}~?!'
 
 
 def _no_punct(phrase):
@@ -114,7 +114,3 @@ def contentCleanUp(ArticleReader):
         article['content'] = cur_c
 
     return ArticleReader
-        
-    
-    
-
