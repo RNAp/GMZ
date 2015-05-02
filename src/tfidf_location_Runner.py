@@ -6,7 +6,7 @@ NEWS_TIMEFORMAT = "%Y-%m-%d %H:%M:%S"
 
 # Prepare the file names
 inputFileName = "qdotsNanoPhoto_all_nono_dup.txt"
-idfFileName = "40withdup_idf.txt"
+idfFileName = "40NoDupNoPunc_idf.txt"
 #savedStopwordFileName = "stopwordfile.txt"
 savedWordTfidfFileName = "qdot_MIT_10topwords_loaction_filter.txt"
 seedID = "2013032709_00001367_W"
