@@ -32,8 +32,8 @@ class ArticleReader(object):
             fields = line.split('\t')
             if len(fields) == 0:
                 continue
-            key = fields[0]
-            value = fields[-1]
+            key = fields[0].strip()
+            value = fields[-1].strip()
             if key == 'I':
                 if len(self.articleList) > 0:
                     self._langFiltering()
@@ -45,7 +45,7 @@ class ArticleReader(object):
             if key == 'U':
                 self.articleList[-1]['url'] = value
             if key == 'D':
-                self.articleList[-1]['date'] = dt.datetime.strptime(value.strip(), NEWS_TIMEFORMAT)
+                self.articleList[-1]['date'] = dt.datetime.strptime(value, NEWS_TIMEFORMAT)
             if key == 'T':
                 self.articleList[-1]['title'] = value
             if key == 'C':
@@ -66,13 +66,13 @@ class ArticleReader(object):
             fields = line.split('\t')
             if len(fields) == 0:
                 continue
-            key = fields[0]
-            value = fields[-1]
+            key = fields[0].strip()
+            value = fields[-1].strip()
             if key == 'I':
                 if len(self.articleList) > 0:
                     self._langFiltering()
-                if len(self.articleList) > 0:
-                    self._urlFiltering()
+                # if len(self.articleList) > 0:
+                #     self._urlFiltering()
                 if len(self.articleList) > 0:
                     self._deduplication()
                 newArticle = {}
@@ -83,7 +83,7 @@ class ArticleReader(object):
             if key == 'U':
                 self.articleList[-1]['url'] = value
             if key == 'D':
-                self.articleList[-1]['date'] = dt.datetime.strptime(value.strip(), NEWS_TIMEFORMAT)
+                self.articleList[-1]['date'] = dt.datetime.strptime(value, NEWS_TIMEFORMAT)
             if key == 'T':
                 self.articleList[-1]['title'] = value
             if key == 'C':
@@ -115,19 +115,18 @@ class ArticleReader(object):
         for a in self.articleList[:-1]:
             url = a.get('url',None)
             if url is not None and lastUrl is not None:
+                # if url is the same, duplicates!
                 if lastUrl == url:
                     self.articleList.pop()
                     break
             title = a.get('title',None)
-            if title is not None and lastTitle is not None:
-                if lastTitle == title:
-                    self.articleList.pop()
-                    break
             content = a.get('content',None)
-            if content is not None and lastContent is not None:
-                if lastContent == content:
-                    self.articleList.pop()
-                    break
+            if title is not None and lastTitle is not None:
+                if content is not None and lastContent is not None:
+                    # if both title and content are the same, duplicates!
+                    if lastTitle == title and lastContent == content:
+                        self.articleList.pop()
+                        break
 
     def _urlFiltering(self):
         urlBlacklist = ['facebook.com','twitter.com']
