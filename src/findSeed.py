@@ -29,7 +29,7 @@ def findSeed(filename = None, key = [], date = None):
 
     
     try:
-        sr = sel.select_by_date(ar, sr, date, date_range = dt.timedelta(days=14))
+        sr = sel.select_by_date(ar, sr, date, date_range = dt.timedelta(days=120))
     except date == None:
         print "Please specify date!!!"
         return -1
@@ -39,7 +39,8 @@ def findSeed(filename = None, key = [], date = None):
     except key == []:
         print "no keywords specified!"
 
-    if len(sr.articleList) != 0: 
+    if len(sr.articleList) != 0:
+        sr.articleList.sort(key=lambda a : a.get('date'))
         seedNews = sr.articleList[0]
     else:
         seedNews = None
