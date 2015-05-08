@@ -50,6 +50,3 @@ with open(OutputFileName, 'w') as f:
         f.write('%s\t%f\n' % (pairs[0],pairs[1]))
     f.close()
 
-
-
-

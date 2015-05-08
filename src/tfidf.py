@@ -29,6 +29,10 @@ import math
 import re
 from operator import itemgetter
 import FormatArticles as fa
+# import porter: If we have a small corpus, we may not be able to afford to be overly selective, and it may
+# be best to aggressively normalize the text, to increase recall. If we have a very large corpus,
+# precision may be more important, and we might not want any normalization. Hull (1996)
+# gives a good analysis of normalization for information retrieval (http://www.jair.org/media/2934/live-2934-4846-jair.pdf)
 
 class TfIdf:
 
@@ -120,9 +124,9 @@ class TfIdf:
     return self.num_docs
 
   def get_idf(self, term):
-    """Retrieve the IDF for the specified term. 
-    
-       This is computed by taking the logarithm of ( 
+    """Retrieve the IDF for the specified term.
+
+       This is computed by taking the logarithm of (
        (number of documents in corpus) divided by (number of documents
         containing this term) ).
      """
@@ -132,7 +136,7 @@ class TfIdf:
     if not term in self.term_num_docs:
       return self.idf_default
 
-    return math.log(float(1 + self.get_num_docs()) / 
+    return math.log(float(1 + self.get_num_docs()) /
       (1 + self.term_num_docs[term]))
 
   def get_doc_keywords(self, curr_doc):

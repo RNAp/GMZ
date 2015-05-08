@@ -133,16 +133,17 @@ def hkshingle(s, k):
     for s in kshingle(s, k):
         yield hash(s)
 
-def multiWshingle(a, k):
+def multiWshingle(a, k, stopword_set):
     """Generate k-word shingles of array a"""
     k = min(len(a), k)
     for i in range(len(a) - k + 1):
-        yield ' '.join(a[i:i+k])
+        if a[i] in stopword_set:
+            yield ' '.join(a[i:i+k])
 
 
-def hmultiWshingle(a, k):
+def hmultiWshingle(a, k, stopword_set):
     """Generate k-word shingles then hash"""
-    for s in multiWshingle(a, k):
+    for s in multiWshingle(a, k, stopword_set):
         yield hash(s)
 
 def jaccard_sim(X, Y):
