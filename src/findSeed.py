@@ -29,7 +29,7 @@ def findSeed(filename = None, key = [], date = None):
 
     
     try:
-        sr = sel.select_by_date(ar, sr, date, date_range = dt.timedelta(days=14))
+        sr = sel.select_by_date(ar, sr, date, date_range = dt.timedelta(days=90))
     except date == None:
         print "Please specify date!!!"
         return -1

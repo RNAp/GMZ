@@ -7,6 +7,7 @@ NEWS_TIMEFORMAT = "%Y-%m-%d %H:%M:%S"
 
 # Prepare the file names
 inputFileName = "articles_higgsPhyCern_all_no_dup.txt"
+
 pickleName = "higgs_no_dup_part1.pickle"
 outputIdDateFileName = "articles_higgs_id_date_no_dup_topK_part1.txt"
 outputAllFileName = "articles_higgs_all_no_dup_topK_part1.txt"

@@ -1,13 +1,13 @@
 from findSeed import findSeed
 import datetime as dt
 
-date = "2013-03-18 00:00:00"
+date = "2013-02-01 00:00:00"
 NEWS_TIMEFORMAT = "%Y-%m-%d %H:%M:%S"
 
 timestamp = dt.datetime.strptime(date.strip(), NEWS_TIMEFORMAT)
 
 filename = "articles_qdotsNanoPhoto_all_no_dup.txt"
-key  = ["nanowires", "mit", "jean"]
+key  = ["mit", "jean"]
 
 
 seed = findSeed(filename, key, timestamp )
