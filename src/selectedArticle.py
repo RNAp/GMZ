@@ -51,7 +51,7 @@ class SelectedArticle(object):
 
     def addDateRange(self, timestamp, interval):
         newDict = {timestamp : interval}
-        dateRangeSet.append(newDict)
+        self.dateRangeSet.append(newDict)
 
     def dateRange(self):
         return self.dateRangeSet

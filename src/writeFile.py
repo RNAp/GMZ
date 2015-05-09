@@ -13,7 +13,7 @@ class ArticleWriter(object):
 
     def __init__(self, articleList):
         self.articleList = articleList
-        #self._sortArticleByDate()
+        self._sortArticleByDate()
         
     def writeFile(self, filename):
         f = open(filename,'w')
@@ -57,6 +57,32 @@ class ArticleWriter(object):
                 if key == 'date':
                     f.write('%s\n' % a[key].strftime(NEWS_TIMEFORMAT))
                     break
+        f.close()
+
+    def writeTable(self, filename):
+        f = open(filename,'w')
+        for a in self.articleList:
+            for key in a.keys():
+                if key == 'id':
+                    f.write('%s\t' % a[key].strip())
+                    break
+            for key in a.keys():
+                if key == 'url':
+                    f.write('%s\t' % a[key].strip())
+                    break
+            for key in a.keys():
+                if key == 'date':
+                    f.write('%s\t' % a[key].strftime(NEWS_TIMEFORMAT))
+                    break
+            for key in a.keys():
+                if key == 'title':
+                    f.write('%s\t' % a[key].strip())
+                    break
+            for key in a.keys():
+                if key == 'content':
+                    f.write('%s' % a[key].strip())
+                    break
+            f.write('\n')
         f.close()
         
     def _sortArticleByDate(self):

@@ -111,3 +111,6 @@ def PlotSimScore(input_filename,output_filename): #Take in a file of news IDs an
     plt.xticks(range(len(score)),label)
     plt.show()
     return
+
+if __name__ == '__main__':
+    PlotSimScore('higgss_similarityByJar.txt','higgss_similarityByJar_plot.txt')
