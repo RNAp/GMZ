@@ -11,6 +11,7 @@ from datetime import timedelta
 '''
 #######################
 current API for selection module:
+blockurl(ArticleReader, SelectedArticle, url_Filename='blockedurl.txt')
 
 select_by_url(ArticleReader, SelectedArticle, url_Filename='url_list.txt')
 
@@ -46,6 +47,28 @@ def _preserveSR(prev_SR, cur_SR):
     return cur_SR
 
 
+
+'''
+        filter articles from a mannually maintained blocked url list
+'''
+def block_url(ArticleReader, SelectedArticle, url_Filename='url_list.txt'):
+    articles = ArticleReader.articleList
+    url_set = _readURLfile(url_Filename)
+
+    _preserveSR(ArticleReader, SelectedArticle) # this is to preserve info from ArticleReader when ArticleReader is actually previous generation of SelectedArticle
+    
+    SelectedArticle.addUrlSource(url_set)
+    for article in ArticleReader.articleList:
+        cur_url=article['url'].strip()
+        flag=0   # label cur_url and see if it is in blocked list
+        for url in url_set:
+            if url in cur_url: # if blocked domain is a substring of cur_url, then block cur article
+                flag=1
+                break
+        if flag==0:
+            SelectedArticle.addArticle(article)
+               
+    return SelectedArticle
 
 
 '''
