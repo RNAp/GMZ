@@ -10,7 +10,7 @@ from readFile import ArticleReader
 import datetime as dt
 import selectedArticle as SA
 import selection as sel
-
+from FormatArticles import contentCleanUp
 
 
 
@@ -23,6 +23,7 @@ def findSeed(filename = None, key = [], date = None):
         print "filename error!"
         return -1
 
+    contentCleanUp(ar) # clean up contents formats to get rid of upper case, stop words etc.
     ar.sortArticleByDate() # sort articles by date first
     
     sr = SA.SelectedArticle()
