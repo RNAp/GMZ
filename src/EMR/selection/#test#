@@ -1,0 +1,1 @@
+-files s3://gmz-src/EMR/lan_selection/mapper.py,s3://gmz-src/EMR/lan_selection/reducer.py -mapper mapper.py -reducer reducer.py -input s3://gmz-src/hive_input_CRISPR/ -output s3://gmz-src/hive_input_CRISPR/
