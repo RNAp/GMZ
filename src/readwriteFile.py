@@ -5,9 +5,13 @@ import datetime as dt
 
 NEWS_TIMEFORMAT = "%Y-%m-%d %H:%M:%S"
 EN_THRESHOLD = 0.95
-READ_LIMIT = 1e5
-DATE_BEFORE = 1
+READ_LIMIT = 1e4
+DATE_BEFORE = 3
 DATE_AFTER = 14
+FILTER_TYPE_1 = "_langFiltered_"
+FILTER_TYPE_2 = "_dateFiltered_"
+FILTER_TYPE_3 = "_keyFiltered_"
+FILTER_TYPE_4 = "_dedup_"
 
 class ArticleReaderWriter(object):
 
@@ -35,11 +39,12 @@ class ArticleReaderWriter(object):
             value = fields[-1].strip()
             if key == 'I':
                 if len(self.articleList) > 0:
+                    self._checkDate()
                     self._langFiltering()
                     if len(self.articleList) >= READ_LIMIT:
                         print "writing langFiltered file part ", partNumber
                         aw = ArticleWriter(self.articleList)
-                        aw.writeFile(filename[:-4] + "_langFiltered_" + str(partNumber) + ".txt")
+                        aw.writeFile(filename[:-4] + FILTER_TYPE_1 + str(partNumber) + ".txt")
                         partNumber += 1
                         self._dumpArticles()
                 newArticle = {}
@@ -63,9 +68,12 @@ class ArticleReaderWriter(object):
                     quoteList = []
                     quoteList.append(value)
                     self.articleList[-1]['quotes'] = quoteList
+        if len(self.articleList) > 0:
+            self._checkDate()
+            self._langFiltering()
         print "writing langFiltered file part ", partNumber
         aw = ArticleWriter(self.articleList)
-        aw.writeFile(filename[:-4] + "_langFiltered_" + str(partNumber) + ".txt")
+        aw.writeFile(filename[:-4] + FILTER_TYPE_1 + str(partNumber) + ".txt")
         self._dumpArticles()
         f.close()
 
@@ -83,11 +91,12 @@ class ArticleReaderWriter(object):
             value = fields[-1].strip()
             if key == 'I':
                 if len(self.articleList) > 0:
+                    self._checkDate()
                     self._dateFiltering(timestamp, date_before, date_after)
                     if len(self.articleList) >= READ_LIMIT:
                         print "writing dateFiltered file part ", partNumber
                         aw = ArticleWriter(self.articleList)
-                        aw.writeFile(filename[:-4] + "_dateFiltered_" + str(partNumber) + ".txt")
+                        aw.writeFile(filename[:-4] + FILTER_TYPE_2 + str(partNumber) + ".txt")
                         partNumber += 1
                         self._dumpArticles()
                 newArticle = {}
@@ -111,9 +120,12 @@ class ArticleReaderWriter(object):
                     quoteList = []
                     quoteList.append(value)
                     self.articleList[-1]['quotes'] = quoteList
+        if len(self.articleList) > 0:
+            self._checkDate()
+            self._dateFiltering(timestamp, date_before, date_after)
         print "writing dateFiltered file part ", partNumber
         aw = ArticleWriter(self.articleList)
-        aw.writeFile(filename[:-4] + "_dateFiltered_" + str(partNumber) + ".txt")
+        aw.writeFile(filename[:-4] + FILTER_TYPE_2 + str(partNumber) + ".txt")
         self._dumpArticles()
         f.close()
 
@@ -128,11 +140,12 @@ class ArticleReaderWriter(object):
             value = fields[-1].strip()
             if key == 'I':
                 if len(self.articleList) > 0:
+                    self._checkDate()
                     self._keyFiltering(keyWords)
                     if len(self.articleList) >= READ_LIMIT:
                         print "writing keyFiltered file part ", partNumber
                         aw = ArticleWriter(self.articleList)
-                        aw.writeFile(filename[:-4] + "_keyFiltered_" + str(partNumber) + ".txt")
+                        aw.writeFile(filename[:-4] + FILTER_TYPE_3 + str(partNumber) + ".txt")
                         partNumber += 1
                         self._dumpArticles()
                 newArticle = {}
@@ -156,9 +169,12 @@ class ArticleReaderWriter(object):
                     quoteList = []
                     quoteList.append(value)
                     self.articleList[-1]['quotes'] = quoteList
+        if len(self.articleList) > 0:
+            self._checkDate()
+            self._keyFiltering(keyWords)
         print "writing keyFiltered file part ", partNumber
         aw = ArticleWriter(self.articleList)
-        aw.writeFile(filename[:-4] + "_keyFiltered_" + str(partNumber) + ".txt")
+        aw.writeFile(filename[:-4] + FILTER_TYPE_3 + str(partNumber) + ".txt")
         self._dumpArticles()
         f.close()
 
@@ -173,11 +189,12 @@ class ArticleReaderWriter(object):
             value = fields[-1].strip()
             if key == 'I':
                 if len(self.articleList) > 0:
+                    self._checkDate()
                     self._deduplication()
                     if len(self.articleList) >= READ_LIMIT:
                         print "writing deduplicated file part ", partNumber
                         aw = ArticleWriter(self.articleList)
-                        aw.writeFile(filename[:-4] + "_dedup_" + str(partNumber) + ".txt")
+                        aw.writeFile(filename[:-4] + FILTER_TYPE_4 + str(partNumber) + ".txt")
                         partNumber += 1
                         self._dumpArticles()
                 newArticle = {}
@@ -201,9 +218,12 @@ class ArticleReaderWriter(object):
                     quoteList = []
                     quoteList.append(value)
                     self.articleList[-1]['quotes'] = quoteList
+        if len(self.articleList) > 0:
+            self._checkDate()
+            self._deduplication()
         print "writing deduplicated file part ", partNumber
         aw = ArticleWriter(self.articleList)
-        aw.writeFile(filename[:-4] + "_dedup_" + str(partNumber) + ".txt")
+        aw.writeFile(filename[:-4] + FILTER_TYPE_4 + str(partNumber) + ".txt")
         self._dumpArticles()
         f.close()
 
@@ -219,13 +239,18 @@ class ArticleReaderWriter(object):
 
     def _keyFiltering(self, keyWords):
         cur_c = self.articleList[-1].get('content',None)
-        cur_c = cur_c.strip().lower()
-        mark = 0
-        for key in keyWords:
-            if key not in cur_c:
-                mark += 1
-        if mark > 0:
+        if cur_c is None:
             self.articleList.pop()
+        else:
+            cur_c = cur_c.strip().lower()
+            # Criterion: at least one keyword is in the current content
+            mark = False
+            for key in keyWords:
+                if key.strip().lower() in cur_c:
+                    mark = True
+                    break
+            if mark == False:
+                self.articleList.pop()
 
     def _deduplication(self):
         lastUrl = self.articleList[-1].get('url',None)
@@ -260,6 +285,11 @@ class ArticleReaderWriter(object):
 
     def _dumpArticles(self):
         self.articleList[:] = []
+
+    def _checkDate(self):
+        lastDate = self.articleList[-1].get('date',None)
+        if lastDate is None:
+                self.articleList.pop()
 
     def getArticleList(self):
         return self.articleList
