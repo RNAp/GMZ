@@ -38,7 +38,8 @@ def main():
             cur_C=value
                 
         if cur_T!='' and cur_C!='' and cur_Date!='': 
-            print 'I\t%s\nU\t%s\nD\t%s\nT\t%s\nC\t%s\n' % (cur_ID,url,cur_Date, cur_T, cur_C)
+            #print 'I\t%s\nU\t%s\nD\t%s\nT\t%s\nC\t%s\n' % (ID,url,cur_Date, cur_T, cur_C)
+            print '%s\t%s\t%s\t%s\t%s\n' % (cur_ID, cur_url, cur_Date, cur_T, cur_C) # output written in oneline : ID, url, Date, Title, content
             cur_ID, cur_T, cur_C, cur_Date=__cleanup()
 
 if __name__=="__main__":

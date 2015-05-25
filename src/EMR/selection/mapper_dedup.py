@@ -29,6 +29,7 @@ def main(separator='\t'):
     cur_ID=''
     cur_url=''
     url_list=readURL()
+    lan_value=''
     # input comes from STDIN (standard input)
     for line in sys.stdin:
         line = line.strip()
@@ -41,23 +42,30 @@ def main(separator='\t'):
         if key=='I':
             counter=counter+1
             flag=True
-            cur_ID=value   
+            cur_ID=value
+            
         if key=='S': # language filtering
             if fields[1]!='en' or float(fields[2])<0.95:
                 flag=False
                 continue
-        if key=='U': # url filtering
+            else:
+               lan_value='%s::%s' % (fields[1], fields[2])
+                
+        if key=='U' and flag==True: # url filtering
             for url in url_list:
                 if url in value:
                     flag=False
                     continue
             if flag==True: # record current url of the article
-                cur_url=value        
+                cur_url=value
+                if lan_value
+                print '%s\t%s\t%s\t%s' % (cur_url, cur_ID, 'S', lan_value)
+                
         #if key=='D': # date filtering
         #    cur_date=dt.datetime.strptime(value, NEWS_TIMEFORMAT)
         #    flag=dateLimit(cur_date)
             
-        if key=='D' or key=='T' or key=='C':
+        if key=='D' or key=='T' or key=='C': #or key=='S':
             if flag==False:
                 continue
             else:
