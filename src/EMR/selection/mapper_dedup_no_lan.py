@@ -49,8 +49,8 @@ def main(separator='\t'):
                 if fields[1]!='en' or float(fields[2])<0.95:
                     flag=False
                     continue
-                else:
-                    lan_value='%s::%s' % (fields[1], fields[2])
+                #else:
+                #    lan_value='%s::%s' % (fields[1], fields[2])
                 
         if key=='U' and flag==True: # url filtering
             for url in url_list:
@@ -60,7 +60,7 @@ def main(separator='\t'):
             if flag==True: # record current url of the article
                 cur_url=value
                 #if lan_value
-                print '%s\t%s\t%s\t%s' % (cur_url, cur_ID, 'S', lan_value)
+                #print '%s\t%s\t%s\t%s' % (cur_url, cur_ID, 'S', lan_value)
                 
         #if key=='D': # date filtering
         #    cur_date=dt.datetime.strptime(value, NEWS_TIMEFORMAT)
